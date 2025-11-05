@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JoJo's Bizarre Adventure</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f0f0f0; color: #333; line-height: 1.6; }
+        header, footer { background: -webkit-linear-gradient(180deg, rgb(0, 141, 255), rgb(182, 72, 72));
+background: -moz-linear-gradient(180deg, rgb(0, 141, 255), rgb(182, 72, 72));
+background: linear-gradient(180deg, rgb(0, 141, 255), rgb(182, 72, 72)); padding: 20px; text-align: center; }
+        nav { margin-top: 10px; }
+        nav a { color: #FFD700; text-decoration: none; margin: 0 15px; font-size: 18px; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { font-size: 50px; text-align: center; color: #8B0000; margin: 20px 0; }
+        h2 { font-size: 40px; color: #8B0000; margin: 30px 0 15px; }
+        p { font-size: 20px; margin-bottom: 15px; }
+        .logo { width: 150px; height: 150px; display: inline-block; margin: 5px; }
+        img { max-width: 100%; height: auto; margin: 10px 0; border: 3px solid #8B0000; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #FFEBCD; font-size: 20px; }
+        th, td { border: 2px solid #8B0000; padding: 10px; text-align: left; }
+        th { background: -webkit-linear-gradient(180deg, rgb(0, 141, 255), rgb(182, 72, 72));
+background: -moz-linear-gradient(180deg, rgb(0, 141, 255), rgb(182, 72, 72));
+background: linear-gradient(180deg, rgb(0, 141, 255), rgb(182, 72, 72));; color: #FFD700; }
+        form { background: white; padding: 20px; margin: 20px 0; border: 2px solid #8B0000; }
+        input, textarea, button { width: 100%; padding: 10px; margin: 5px 0; font-size: 16px; }
+        button { background: #8B0000; color: #FFD700; border: none; cursor: pointer; }
+        .bold { font-weight: bold; }
+        .italic { font-style: italic; }
+        footer { color: white; font-size: 18px; }
+        .social-icon { width: 40px; height: 40px; border: none; margin: 0 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCxKIyfqa1iWQJqBEyjHLBVAeZUdHJAGE_cw&s"></div>
+        <h1>JoJo's Bizarre Adventure</h1>
+        <nav>
+            <a href="#parts">Части</a>
+            <a href="#characters">Персонажи</a>
+            <a href="#contact">Контакты</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2 id="parts">О серии</h2>
+        <p><span class="bold">JoJo's Bizarre Adventure</span> - это культовая манга Хирохико Араки, публикующаяся с 1987 года.</p>
+        <p>История рассказывает о приключениях членов семьи Джостаров и их борьбе со сверхъестественными угрозами.</p>
+        
+        <img src="https://i.pinimg.com/564x/f3/5e/08/f35e0805d18003d90f2cfa687fbae10b.jpg" alt="Обложка JoJo">
+        
+        <h2 id="characters">Основные части</h2>
+        <table>
+            <tr><th>Часть</th><th>Главный герой</th><th>Годы</th></tr>
+            <tr><td>Phantom Blood</td><td>Джонатан Джостар</td><td>1987-1988</td></tr>
+            <tr><td>Battle Tendency</td><td>Джозеф Джостар</td><td>1988-1989</td></tr>
+            <tr><td>Stardust Crusaders</td><td>Джотаро Куджо</td><td>1989-1992</td></tr>
+            <tr><td>Diamond is Unbreakable</td><td>Джоске Хигашиката</td><td>1992-1995</td></tr>
+        </table>
+
+        <h2>Отзыв о серии</h2>
+        <form>
+            <input type="text" placeholder="Ваше имя" required>
+            <textarea placeholder="Ваш отзыв" rows="4" required></textarea>
+            <button type="submit">Отправить</button>
+        </form>
+    </main>
+
+    <footer id="contact">
+        <p>Адрес: г. Токио, район Морио</p>
+        <p>Телефон: +8 900-900-1010</p>
+        <p>
+            <a href="https://vk.com/jojowry" target="_blank">
+                <img src="https://drive.google.com/file/d/1wDcZUe8w4qszL3_ku4Kk72izq8ERIs8z/view?usp=drive_link" 
+                     alt="VK" class="social-icon">
+            </a>
+        </p>
+        <p><span class="italic">© 2025 JoJo's Bizarre Adventure Fan Site</span></p>
+    </footer>
+</body>
+</html>
