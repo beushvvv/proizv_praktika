@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantastic party</title>
+        <style>
+        header {
+            background: lightskyblue; 
+            display: flex;
+            align-items: flex-end;
+            padding: 10px 20px;
+            height: 80px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        :target {
+            background-color: #ffffcc;
+            border-left: 4px solid #ff6b6b;
+            padding: 10px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+        header img {
+            height: 50px;
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-family: "Arial";
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .compact-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 130px;
+            height: 30px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            text-decoration: none;
+            color: #555;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .compact-button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+        
+        nav {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            border: 1px solid gray
+        }
+        
+        nav a {
+            font-family: "Arial";
+            font-size: 20px;
+            color: gray;
+            text-decoration: none;
+            padding: 5px 10px;
+        }
+        
+        nav a:hover {
+            color: #0066cc;
+        }
+        
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 10 px;
+        }
+        
+        main h1 {
+            font-size: 40px;
+            font-weight: bold;
+            color: purple;
+            text-align: center;
+            font-family: "Arial";
+            font-style: italic;
+        }
+
+        footer {
+            background-color: white;
+            padding: 10px;
+        }
+
+        footer p {
+            background-color: white;
+            padding: 5px;
+            font-family: "Arial";
+            font-size: 20px;
+            border: 2px solid grey;
+        }
+        form {
+            font-family: "Arial";
+        }
+        #city {
+            background-color: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 5px;
+            color: #2e7d32;
+            padding: 8px 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+
+        #city:focus {
+            background-color: #e3f2fd;
+            border-color: #2196f3;
+            color: #1565c0;
+            outline: none;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+        }
+
+
+        #city option {
+            background-color: white;
+            color: #333;
+            padding: 8px;
+        }
+
+
+        #city option:checked {
+            background-color: #2196f3;
+            color: white;
+        }
+
+
+        #city:hover {
+            border-color: #388e3c;
+        }
+
+        .rounded-box {
+            background-color: #E9967A;
+            border-radius: 15px;
+            padding: 20px;
+            display: block;
+            width: calc(100% - 40px);
+            margin: 20px 0;
+            font-family: Arial;
+            font-size: 25px;
+            line-height: 1.5;
+            text-align: left;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        h1 {
+            font-family: "Arial";
+            color: blue;
+        }
+        .contact-button {
+            font-family: "Arial";
+            border: 2px solid blue;
+            font-size: 15px;
+            color: blue;
+            width: 90;
+            height: 40;
+        }
+        .back-to-top {
+            font-family: "Arial";
+            border: 2px solid blue;
+            font-size: 15px;
+            color: blue;
+            width: 90;
+            height: 40;                
+        }
+        p {
+            font-family: "Arial";
+
+        }
+        </style>
+    </head>
+    <body>
+        <div class="main-content">
+        <header>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPMDiv_0z5owjoh8XLIYKY1vxtveZ-D0dkdw&s" alt="Логотип">
+            <p><b>Внимание! Сезонные скидки 40%</b> <a href="#moresale" class="compact-button">Подробнее</a></p>
+        </header>
+        <nav>
+            <a href="#crackers">Продукция</a>
+            <a href="#how-to-buy">Как купить?</a>
+            <a href="#wholesale">Оптом</a>
+            <a href="#about">О компании</a>
+        </nav>
+        <main>
+            <h1>Fantastic Party</h1>
+
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial; font-size: 20px; margin: 20px auto; max-width: 800px;">
+                <form style="display: flex; align-items: center; gap: 10px;">
+                    <label for="city" style="margin: 30;">Выберите город для доставки: </label>
+                    <select id="city" name="city" style="padding: 5px; font-family: Arial; font-size: 20px;">
+                        <option value="Novosibirsk">Новосибирск</option>
+                        <option value="Barnaul">Барнаул</option>
+                        <option value="Biysk">Бийск</option>
+                    </select>
+                </form>
+            </div>
+
+            <div id="crackers" class="rounded-box">
+                <img src="https://avatars.mds.yandex.net/i?id=08257b67a8344196f1329031d8f3658990fd0708-11923513-images-thumbs&n=13" width="100">
+                <p>Хлопушки</p>
+            </div>
+
+            <div class="rounded-box">
+                <img src="https://i.pinimg.com/originals/f0/de/97/f0de97b1be53878b3e1ed8c7512e85a9.jpg" width="100">
+                <p>Петарды</p>
+            </div>
+            
+            <div class="rounded-box">
+                <img src="https://yt3.googleusercontent.com/ytc/AIdro_lZGQCAO3Cl43x8_-J4j6MPLOe3d2HXL6jSEcD-j59r0Q=s900-c-k-c0x00ffffff-no-rj" width="100">
+                <p>Фонтаны</p>
+            </div>
+
+            <div class="rounded-box">
+                <img src="https://avatars.mds.yandex.net/i?id=5a6cdf9d4f7b0b952292d049d0693f50aa640891-5210535-images-thumbs&n=13" width="100">
+                <p>Фестивальные шары</p>
+            </div>
+        
+        <h1 id="moresale">Сезонное предложение</h1>
+        <p>С 5 декабря по 5 марта действует предложение: скидка на всю продукцию 40%.</p>
+        <p><b><i>Спешите купить праздник выгодно?</i></b></p>
+        <img style="border-radius: 15px; border: 1px solid blue" src="https://img.freepik.com/premium-vector/christmas-themed-illustration_278696-50.jpg?semt=ais_hybrid" width="500">
+        <h1 id="how-to-buy">Как приобрести?</h1>
+        <button class="contact-button" onclick="window.scrollTo({top: 1700, behavior: 'smooth'})">Контакты</button>
+        <p>Вы можете сделать заказ по телефону или приобрести товары в магазине.</p>
+        <p>В магазине вас ждёт подробный рассказ о нашей продукции.</p>
+        <p>При посещении магазина можно заказать доставку на дом/в офис.</p>
+        <p>Вы также можете по телефону сделать предзаказ для резервирования товаров в магазине.</p>
+        <h1 id="wholesale">Оптом</h1>
+        <p>От 100 000₽ - скидка 45%</p>
+        <p>От 200 000₽ - скидка 50%</p>
+        <img src="https://i.pinimg.com/736x/9b/df/52/9bdf52508e86e9b2d90600f4c0040860.jpg" width="150">
+
+        <h1 id="about">О компании</h1>
+        <p>Наша история началась с магазина, открывшегося в 2005 году. Тогда мы предлагали только хлопушки.</p>
+        <p>В 2015 году у нас появился сайт, а ассортимент пополнился новыми видами товаров.</p>
+        <img src="https://avatars.mds.yandex.net/i?id=912744c8db8c5e02b6c32932dbb0e3852f134d4d-9264516-images-thumbs&n=13" width="150">
+        <p></p>
+        <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Наверх</button>
+    </main>
+        <footer>
+            <p><b>Контакты</b></p>
+            <p>Адрес: Г. Звездный, пр-кт, Экспрериментальный, 21</p>
+            <p>Тел.: 2502-3716</p>
+        </footer>
+        </div>
+    </body>
+</html>
