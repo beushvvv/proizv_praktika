@@ -261,6 +261,21 @@
             border-radius: 10px;
             object-fit: cover;
             flex-shrink: 0;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            border: 2px solid #e1e5e9;
+        }
+
+        .task-image.fallback {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
         }
 
         .task-content {
@@ -671,7 +686,7 @@
                     name,
                     category,
                     priority,
-                    image: image || 'https://via.placeholder.com/80x80/667eea/white?text=📋',
+                    image: image || null,
                     completedStages: 0,
                     totalStages,
                     progress: 0,
@@ -687,8 +702,6 @@
             }
 
             updateProgress(taskId, increment) {
-                console.log('Updating progress for task:', taskId, 'increment:', increment);
-                
                 const taskIndex = this.tasks.findIndex(t => t.id === taskId);
                 if (taskIndex === -1) return;
 
@@ -705,14 +718,12 @@
                 }
 
                 task.progress = (task.completedStages / task.totalStages) * 100;
-                this.tasks[taskIndex] = task; // Обновляем задачу в массиве
+                this.tasks[taskIndex] = task;
                 this.saveTasks();
                 
-                // Находим и обновляем конкретный элемент задачи
                 this.updateTaskElement(taskId);
                 this.updateStats();
                 
-                // Показываем уведомление о завершении задачи
                 if (task.progress === 100) {
                     this.showCompletionNotification(task.name);
                 }
@@ -721,7 +732,6 @@
             updateTaskElement(taskId) {
                 const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
                 if (!taskElement) {
-                    console.log('Task element not found, re-rendering all tasks');
                     this.renderTasks();
                     return;
                 }
@@ -858,21 +868,22 @@
                 if (deadlineFilter !== 'all') {
                     const now = new Date();
                     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                    const weekEnd = new Date(today);
-                    weekEnd.setDate(weekEnd.getDate() + 7);
-
+                    
                     filteredTasks = filteredTasks.filter(task => {
-                        if (!task.deadline) return deadlineFilter === 'all';
+                        if (!task.deadline) return false;
                         
                         const taskDeadline = new Date(task.deadline);
+                        const taskDeadlineDate = new Date(taskDeadline.getFullYear(), taskDeadline.getMonth(), taskDeadline.getDate());
                         
                         switch(deadlineFilter) {
                             case 'today':
-                                return taskDeadline.toDateString() === today.toDateString();
+                                return taskDeadlineDate.getTime() === today.getTime();
                             case 'week':
-                                return taskDeadline >= today && taskDeadline <= weekEnd;
+                                const weekEnd = new Date(today);
+                                weekEnd.setDate(weekEnd.getDate() + 7);
+                                return taskDeadlineDate >= today && taskDeadlineDate <= weekEnd;
                             case 'overdue':
-                                return taskDeadline < today && task.progress < 100;
+                                return taskDeadlineDate < today && task.progress < 100;
                             default:
                                 return true;
                         }
@@ -906,19 +917,22 @@
 
             renderTasks() {
                 const container = document.getElementById('tasksContainer');
-                const emptyState = document.getElementById('emptyState');
-
                 const filteredTasks = this.getFilteredAndSortedTasks();
 
+                // Очищаем контейнер
+                container.innerHTML = '';
+
                 if (filteredTasks.length === 0) {
-                    container.innerHTML = '';
+                    // Создаем новый emptyState элемент
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'empty-state';
+                    emptyState.id = 'emptyState';
+                    emptyState.textContent = '📝 Пока нет задач. Добавьте первую задачу!';
                     container.appendChild(emptyState);
                     return;
                 }
 
-                emptyState.remove();
-                container.innerHTML = '';
-
+                // Добавляем задачи
                 filteredTasks.forEach(task => {
                     const taskElement = this.createTaskElement(task);
                     container.appendChild(taskElement);
@@ -946,9 +960,24 @@
                     ? this.formatDeadline(task.deadline, task.progress)
                     : 'Без срока';
 
+                // Создаем HTML для изображения - УСЛОВНОЕ ОТОБРАЖЕНИЕ
+                let imageHtml = '';
+                if (task.image) {
+                    // Если есть ссылка на изображение, показываем его с fallback
+                    imageHtml = `
+                        <div class="task-image-container">
+                            <img src="${task.image}" alt="${task.name}" class="task-image" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="task-image fallback" style="display: none;">📋</div>
+                        </div>
+                    `;
+                } else {
+                    // Если нет ссылки, показываем только fallback
+                    imageHtml = `<div class="task-image fallback">📋</div>`;
+                }
+
                 taskDiv.innerHTML = `
-                    <img src="${task.image}" alt="${task.name}" class="task-image" 
-                         onerror="this.src='https://via.placeholder.com/80x80/667eea/white?text=📋'">
+                    ${imageHtml}
                     <div class="task-content">
                         <div class="task-header">
                             <h3 class="task-title">${task.name}</h3>
@@ -1057,7 +1086,6 @@
             }
 
             showCompletionNotification(taskName) {
-                // Создаем красивое уведомление о завершении задачи
                 const notification = document.createElement('div');
                 notification.style.cssText = `
                     position: fixed;
@@ -1085,7 +1113,6 @@
                 
                 document.body.appendChild(notification);
                 
-                // Удаляем уведомление через 3 секунды
                 setTimeout(() => {
                     notification.style.animation = 'slideOut 0.3s ease';
                     setTimeout(() => {
