@@ -416,6 +416,42 @@
             font-size: 1.2em;
         }
 
+        /* Новые стили для срочных задач */
+        .priority-urgent::before { background: #ff0000; }
+        .priority-urgent { background: rgba(255, 0, 0, 0.1); border: 2px solid #ff0000; }
+
+        /* Стили для модального окна редактирования */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .edit-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .edit-btn {
+            background: rgba(74, 144, 226, 0.7);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #2d8cff;
+        }
+
         /* Адаптивность для мобильных устройств */
         @media (max-width: 768px) {
             .container {
@@ -630,6 +666,51 @@
                 📝 Пока нет задач. Добавьте первую задачу!
             </div>
         </div>
+
+        <!-- Модальное окно редактирования -->
+        <div class="edit-modal" id="editModal">
+            <div class="edit-modal-content">
+                <h3 style="margin-bottom: 20px;">Редактировать задачу</h3>
+                <form id="editTaskForm">
+                    <div class="form-group">
+                        <label for="editTaskName">Название задачи</label>
+                        <input type="text" id="editTaskName" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editTaskCategory">Категория</label>
+                            <select id="editTaskCategory" required>
+                                <option value="work">Работа</option>
+                                <option value="personal">Личное</option>
+                                <option value="health">Здоровье</option>
+                                <option value="education">Обучение</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTaskPriority">Приоритет</label>
+                            <select id="editTaskPriority" required>
+                                <option value="low">Низкий</option>
+                                <option value="medium">Средний</option>
+                                <option value="high">Высокий</option>
+                                <option value="urgent">Наивысший</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTaskImage">Ссылка на картинку</label>
+                        <input type="url" id="editTaskImage" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-group">
+                        <label for="editTaskDeadline">Срок выполнения</label>
+                        <input type="date" id="editTaskDeadline">
+                    </div>
+                    <div class="form-row" style="margin-top: 20px;">
+                        <button type="button" class="control-btn" onclick="taskManager.closeEditModal()" style="background: #6c757d;">Отмена</button>
+                        <button type="submit" class="control-btn" style="background: #4CAF50;">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -637,6 +718,7 @@
             constructor() {
                 this.tasks = JSON.parse(localStorage.getItem('tasks')) || [];
                 this.maxTasks = 20;
+                this.editingTaskId = null;
                 this.init();
             }
 
@@ -648,6 +730,20 @@
                 // Устанавливаем минимальную дату для дедлайна
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('taskDeadline').min = today;
+                document.getElementById('editTaskDeadline').min = today; // Добавь эту строку
+
+                // Обработчик формы редактирования - добавь этот блок
+                document.getElementById('editTaskForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveTaskChanges();
+                });
+
+                // Закрытие модального окна по клику вне его - добавь этот блок
+                document.getElementById('editModal').addEventListener('click', (e) => {
+                    if (e.target.id === 'editModal') {
+                        this.closeEditModal();
+                    }
+                });
             }
 
             bindEvents() {
@@ -838,6 +934,61 @@
                 }
             }
 
+            // Добавь после функции deleteTask()
+            openEditModal(taskId) {
+                const task = this.tasks.find(t => t.id === taskId);
+                if (!task) return;
+
+                document.getElementById('editTaskName').value = task.name;
+                document.getElementById('editTaskCategory').value = task.category;
+                document.getElementById('editTaskPriority').value = task.priority;
+                document.getElementById('editTaskImage').value = task.image || '';
+                document.getElementById('editTaskDeadline').value = task.deadline || '';
+
+                this.editingTaskId = taskId;
+                document.getElementById('editModal').style.display = 'flex';
+            }
+
+            closeEditModal() {
+                document.getElementById('editModal').style.display = 'none';
+                this.editingTaskId = null;
+            }
+
+            saveTaskChanges() {
+                if (!this.editingTaskId) return;
+
+                const taskIndex = this.tasks.findIndex(t => t.id === this.editingTaskId);
+                if (taskIndex === -1) return;
+
+                const task = this.tasks[taskIndex];
+                
+                task.name = document.getElementById('editTaskName').value.trim();
+                task.category = document.getElementById('editTaskCategory').value;
+                task.priority = document.getElementById('editTaskPriority').value;
+                task.image = document.getElementById('editTaskImage').value.trim() || null;
+                task.deadline = document.getElementById('editTaskDeadline').value || null;
+
+                this.checkDeadlineUrgency(task);
+
+                this.tasks[taskIndex] = task;
+                this.saveTasks();
+                this.renderTasks();
+                this.closeEditModal();
+            }
+
+            checkDeadlineUrgency(task) {
+                if (task.progress < 100 && task.deadline) {
+                    const now = new Date();
+                    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    const deadline = new Date(task.deadline);
+                    const diffDays = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+                    if (diffDays <= 2 && diffDays >= 0) {
+                        task.priority = 'urgent';
+                    }
+                }
+            }
+
             saveTasks() {
                 localStorage.setItem('tasks', JSON.stringify(this.tasks));
             }
@@ -1011,6 +1162,9 @@
                                     ${task.completedStages === 0 ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
                                 - Этап
                             </button>
+                            <button class="control-btn edit-btn" onclick="taskManager.openEditModal(${task.id})">
+                                ✏️ Редактировать
+                            </button>
                             <button class="control-btn delete-btn" onclick="taskManager.deleteTask(${task.id})">
                                 Удалить
                             </button>
@@ -1045,16 +1199,19 @@
                 return categories[category] || category;
             }
 
+            // Замени старую функцию getPriorityName на эту:
             getPriorityName(priority) {
                 const priorities = {
                     high: 'Высокий',
                     medium: 'Средний',
-                    low: 'Низкий'
+                    low: 'Низкий',
+                    urgent: 'Наивысший'
                 };
                 return priorities[priority] || priority;
             }
 
-            formatDeadline(deadline, progress) {
+            // Замени старую функцию formatDeadline на эту:
+            formatDeadline(deadline, progress, task) {
                 if (progress === 100) {
                     return 'Выполнено';
                 }
@@ -1063,6 +1220,13 @@
                 const taskDate = new Date(deadline);
                 const diffTime = taskDate - now;
                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                if (diffDays <= 2 && diffDays >= 0 && task) {
+                    if (task.priority !== 'urgent') {
+                        task.priority = 'urgent';
+                        this.saveTasks();
+                    }
+                }
 
                 if (diffDays === 0) return 'Сегодня';
                 if (diffDays === 1) return 'Завтра';
