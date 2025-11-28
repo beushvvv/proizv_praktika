@@ -601,10 +601,10 @@
             <div class="filter-group">
                 <label for="sortBy">Сортировка</label>
                 <select id="sortBy" class="filter-select">
+                    <option value="priority">По приоритету</option>
                     <option value="newest">Сначала новые</option>
                     <option value="oldest">Сначала старые</option>
                     <option value="progress">По прогрессу</option>
-                    <option value="priority">По приоритету</option>
                     <option value="deadline">По сроку</option>
                 </select>
             </div>
@@ -781,11 +781,26 @@
                     return;
                 }
 
+                // Определяем приоритет на основе дедлайна
+                let finalPriority = priority;
+                if (deadline) {
+                    const today = new Date();
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    
+                    const deadlineDate = new Date(deadline);
+                    
+                    // Сравниваем даты (игнорируя время)
+                    if (deadlineDate.toDateString() === tomorrow.toDateString()) {
+                        finalPriority = 'urgent';
+                    }
+                }
+
                 const task = {
                     id: Date.now(),
                     name,
                     category,
-                    priority,
+                    priority: finalPriority, // Используем вычисленный приоритет
                     image: image || null,
                     completedStages: 0,
                     totalStages,
@@ -1055,7 +1070,7 @@
                         case 'progress':
                             return b.progress - a.progress;
                         case 'priority':
-                            const priorityOrder = { high: 3, medium: 2, low: 1 };
+                            const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
                             return priorityOrder[b.priority] - priorityOrder[a.priority];
                         case 'deadline':
                             if (!a.deadline && !b.deadline) return 0;
