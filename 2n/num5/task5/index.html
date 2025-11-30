@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Agency</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .header-background {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background: #BBE7FA;
+        }
+
+        .header {
+            position: relative;
+            margin-bottom: 40px;
+            overflow: hidden;
+        }
+
+        .header-background {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background: linear-gradient(90deg, 
+                #BBE7FA 0%, 
+                #BBE7FA 10%, 
+                white 30%,
+                white 70%,
+                #BBE7FA 90%, 
+                #BBE7FA 100%);
+        }
+
+        .gradient-overlay {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .background-text {
+            position: absolute;
+            font-family: 'Ribeye';
+            font-size: 190px;
+            color: rgba(0, 0, 0, 0.3);
+            opacity: 0.3;
+            z-index: 1;
+            letter-spacing: 10px;
+            top: 35%;
+            left: 5%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+
+        .main-title {
+            font-family: 'Ribeye';
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #2a5298;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Адаптивность для шапки */
+        @media (max-width: 768px) {
+            .header-background {
+                height: 150px;
+            }
+            
+            .main-title {
+                font-size: 2.5em;
+            }
+            
+            .background-text {
+                font-size: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-background {
+                height: 120px;
+            }
+            
+            .main-title {
+                font-size: 2em;
+            }
+            
+            .background-text {
+                font-size: 60px;
+            }
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #EB722E;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        /* Стили для секции экскурсий */
+        .excursions-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .video-placeholder {
+            background: #F2EFEF;
+            border-radius: 10px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #594A42;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder::before {
+            content: '▶';
+            font-size: 1.5em;
+            position: absolute;
+            opacity: 0.9;
+            width: 50px;
+            height: 50px;
+            background: #F2EFEF;
+            border: 2px solid #594A42;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none;
+            color: #594A42;
+        }
+
+        /* Стили для полезных ссылок */
+        .links-card {
+            background: #f5f5f5;
+            border: 10px solid #2a5298;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.1);
+        }
+
+        .links-card h3 {
+            color: black;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.4em;
+        }
+
+        .link-item {
+            display: block;
+            padding: 12px 0;
+            margin: 10px 0;
+            border: none;
+            border-bottom: 2px dashed #231FF0;
+            border-radius: 0;
+            color: black;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .link-item:hover {
+            background: transparent;
+            color: #231FF0;
+            border-style: solid;
+            border-bottom: 2px solid #231FF0;
+        }
+
+        /* Стили для секции моря */
+        .sea-videos {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 65%;
+            gap: 20px;
+        }
+
+        .sea-videos .video-placeholder {
+            background: #F2EFEF;
+            height: 180px;
+        }
+
+        /* Стили для секции "всего понемногу" */
+        .mixed-video {
+            display: grid;
+            grid-template-columns: 1fr;
+            width: 31%;
+            gap: 20px;
+        }
+
+        .mixed-video .video-placeholder {
+            background: #F2EFEF;
+            height: 200px;
+        }
+
+        /* Разделительная линия */
+        .divider {
+            width: 100vw;
+            height: 12px;
+            background: #1a472a;
+            margin: 40px 0;
+            border-radius: 2px;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+        /* Стили для секции скидки */
+        .discount-section {
+            text-align: left;
+            padding: 30px 0;
+        }
+
+        .discount-title {
+            font-size: 2em;
+            color: black;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .vk-logo {
+            width: 60px;
+            height: 60px;
+            border: 1px solid #333;
+            border-radius: 10px;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .vk-logo img {
+            width: 40px;
+            height: 30px;
+        }
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .excursions-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .videos-grid,
+            .sea-videos {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+        <!-- Шапка с градиентами -->
+    <div class="header">
+        <div class="header-background">
+            <div class="gradient-overlay">
+                <div class="background-text">TA</div>
+                <h1 class="main-title">Travel Agency</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Секция экскурсий -->
+        <div class="section">
+            <h2>Любите экскурсии?</h2>
+            <div class="excursions-section">
+                <div class="videos-container">
+                    <div class="videos-grid">
+                        <div class="video-placeholder"></div>
+                        <div class="video-placeholder"></div>
+                        <div class="video-placeholder"></div>
+                        <div class="video-placeholder"></div>
+                    </div>
+                </div>
+                
+                <div class="links-card">
+                    <h3>Полезные ссылки</h3>
+                    <a href="#" class="link-item">Билеты</a>
+                    <a href="#" class="link-item">Отели</a>
+                    <a href="#" class="link-item">Чек-лист</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Секция моря -->
+        <div class="section">
+            <h2>Хотите на море?</h2>
+            <div class="sea-videos">
+                <div class="video-placeholder"></div>
+                <div class="video-placeholder"></div>
+            </div>
+        </div>
+
+        <!-- Секция "всего понемногу" -->
+        <div class="section">
+            <h2>Всего понемногу?</h2>
+            <div class="mixed-video">
+                <div class="video-placeholder"></div>
+            </div>
+        </div>
+
+        <!-- Разделительная линия -->
+        <div class="divider"></div>
+
+        <!-- Секция скидки -->
+        <div class="discount-section">
+            <div class="discount-title">Напиши – получи скидку!</div>
+            <div class="vk-logo"><img src="vk.png"></div>
+        </div>
+    </div>
+</body>
+</html>
