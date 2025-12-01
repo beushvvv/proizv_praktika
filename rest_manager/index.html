@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Менеджер отдыха</title>
+    <link rel="stylesheet" href="style.css"> <!-- Можно использовать ваш существующий CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-couch"></i> Менеджер отдыха</h1>
+        <p>Баланс между работой и отдыхом — залог продуктивности.</p>
+
+        <!-- Секция 1: Таймер Pomodoro -->
+        <div class="card">
+            <h2><i class="fas fa-clock"></i> Таймер для перерывов</h2>
+            <div class="timer-display" id="timer">25:00</div>
+            <div class="timer-controls">
+                <button onclick="startTimer()" id="startBtn"><i class="fas fa-play"></i> Старт</button>
+                <button onclick="pauseTimer()" id="pauseBtn"><i class="fas fa-pause"></i> Пауза</button>
+                <button onclick="resetTimer()"><i class="fas fa-redo"></i> Сброс</button>
+            </div>
+            <div class="timer-settings">
+                <label>Работа: <input type="number" id="workTime" value="25" min="1"> мин.</label>
+                <label>Отдых: <input type="number" id="breakTime" value="5" min="1"> мин.</label>
+                <button onclick="applySettings()">Применить</button>
+            </div>
+            <p id="timerStatus">Готово к работе. Нажмите "Старт".</p>
+        </div>
+
+        <!-- Секция 2: Напоминания -->
+        <div class="card">
+            <h2><i class="fas fa-bell"></i> Напоминания об отдыхе</h2>
+            <div class="reminder-controls">
+                <button onclick="toggleReminders()" id="reminderToggle"><i class="fas fa-bell-slash"></i> Включить напоминания</button>
+                <label>Интервал: <input type="number" id="reminderInterval" value="60" min="5"> мин.</label>
+            </div>
+            <div class="reminder-list">
+                <p><i class="fas fa-walking"></i> Встаньте и пройдитесь</p>
+                <p><i class="fas fa-eye"></i> Посмотрите вдаль 20 секунд</p>
+                <p><i class="fas fa-glass-cheers"></i> Выпейте воды</p>
+                <p><i class="fas fa-wind"></i> Сделайте глубокий вдох</p>
+            </div>
+        </div>
+
+        <!-- Секция 3: Идеи для отдыха (аналогично списку задач) -->
+        <div class="card">
+            <h2><i class="fas fa-lightbulb"></i> Идеи для отдыха</h2>
+            <div class="input-group">
+                <input type="text" id="restIdeaInput" placeholder="Например: Прогулка в парке, 15 минут медитации...">
+                <button onclick="addRestIdea()"><i class="fas fa-plus"></i> Добавить</button>
+            </div>
+            <ul class="task-list" id="restIdeasList">
+                <!-- Идеи будут добавляться сюда динамически -->
+                <!-- <li><span>Короткая прогулка</span> <button class="delete-btn"><i class="fas fa-trash"></i></button></li> -->
+            </ul>
+        </div>
+
+        <!-- Секция 4: Статистика -->
+        <div class="card">
+            <h2><i class="fas fa-chart-bar"></i> Статистика отдыха</h2>
+            <p>Сегодня вы посвятили отдыху: <strong id="todayBreakTime">0 минут</strong></p>
+            <p>Завершено рабочих сессий: <strong id="sessionsCompleted">0</strong></p>
+            <button onclick="resetStats()"><i class="fas fa-trash-alt"></i> Сбросить статистику за день</button>
+        </div>
+    </div>
+
+    <script src="rest_manager.js"></script> <!-- Подключим отдельный JS файл -->
+</body>
+</html>
